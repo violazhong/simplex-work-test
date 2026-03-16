@@ -6,6 +6,14 @@ and separately give your intuition for what the geometry should look like. You w
 ## My answer
 I realize that 3 mutually exclusive 3-state HMMs are mathematically equivalent to a single 9-state HMM (the 9 states are mutually exclusive as well), and the transition matrix would have a decomposable block-diagonal structure. Then the key question is whether transformers can discover and use this decomposition. So here, I present two competing hypotheses.
 
+## Mathematical Setup
+ 
+The non-ergodic mixture of $K=3$ Mess3 processes is equivalent to a single GHMM with block-diagonal transition operators $T_{\text{mix}}^{(x)} = \bigoplus_{k=1}^{3} T_k^{(x)}$ acting on $\mathbb{R}^{9}$. After observing context $x_{1:\ell}$, optimal next-token prediction requires:
+ 
+$$P(x_{\ell+1} \mid x_{1:\ell}) = \sum_k P(k \mid x_{1:\ell}) \cdot \eta_k^{(x_{1:\ell})} T_k^{(x_{\ell+1})} \mathbf{1}$$
+ 
+The model must represent both the posterior over components $P(k \mid x_{1:\ell})$ and the within-component belief states $\eta_k^{(x_{1:\ell})}$. The two hypotheses disagree on how this information is organized geometrically.
+
 ### Hypothesis 1: Direct-Sum Representation (Dedicated Subspaces)
 #### Mathematical reasoning 
 The model allocates K orthogonal 2D subspaces, one per component. Each subspace contains the Mess3 belief geometry for that component, scaled by the posterior weight. This is lossless: the full mixture prediction can be recovered from the K scaled belief vectors at all context positions. Total effective dimensionality: 2K = 6. This is the natural analog of the paper's Factored World Hypothesis, adapted from tensor-product to direct-sum structure.
