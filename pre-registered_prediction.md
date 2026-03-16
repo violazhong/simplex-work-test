@@ -21,3 +21,14 @@ The model exploits mutual exclusivity aggressively: since only one component is 
 A 2D "meta-simplex" whose vertices represent certainty about each component, orthogonal to a single shared 2D belief canvas. The meta-simplex acts as a gate: its coordinates dictate which transition dynamics are applied on the shared canvas. All three components' belief geometries overlap in the same 2D subspace, distinguished only by the routing dimensions.
 #### Context position dynamics
 Early positions: the routing signal is uncertain, the shared canvas holds an imprecise mixture — this is where lossiness bites. Late positions: the routing signal is sharp, and the canvas tracks the identified component's belief state accurately. Effective dimensionality is ~4 throughout, but prediction quality improves with context as routing sharpens. Across layers, attention heads in early layers likely handle component discrimination (populating the meta-simplex), while later layers apply component-conditional belief updates on the shared canvas.
+
+### Empirical Discriminators
+#### Converged dimensionality
+Hypothesis 1 predicts ~6 effective dimensions; Hypothesis 2 predicts ~4.
+#### Per-component subspace overlap
+Take sequences from each component k, extract activations, and compute 2D PCA subspaces. Under Hypothesis 1, pairwise overlap is near-zero (dedicated subspaces). Under Hypothesis 2, overlap is near-complete in the belief dimensions (shared canvas), with separation only along routing dimensions.
+#### Position-stratified CEV. 
+Hypothesis 1: dimensionality constant across positions. Hypothesis 2: dimensionality constant at ~4, but regression RMSE to the full mixture prediction decreases with position as routing sharpens.
+
+### My prediction
+I learn towards hypothesis 2, betting that transformers prefer dimensional efficiency even at the cost of fidelity, also because mutual exclusivity is a very strong constraint. However, my preference matters less than the experimental result.
