@@ -13,4 +13,5 @@ The only difference between identical_mess_3_processes.ipynb and experiment_full
 # PROCESS_PARAMS = [(0.5, 0.1), (0.8, 0.3), (0.6, 0.05)]
 PROCESS_PARAMS = [(0.8, 0.3), (0.8, 0.3), (0.8, 0.3)]
 ```
+## Simplex's research is cool, check them out at: https://www.simplexaisafety.com/
 
